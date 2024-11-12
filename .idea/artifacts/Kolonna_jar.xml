@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Kolonna:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Kolonna_jar</output-path>
+    <root id="archive" name="Kolonna.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="$PROJECT_DIR$/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="Kolonna" />
+    </root>
+  </artifact>
+</component>
