@@ -133,23 +133,6 @@ class ListeneerHandler implements Runnable {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    frame.getTfY1().setText("");
-                    frame.getTfY1().requestFocus();
-                }
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-            }
-        });
-        frame.getTfX2().addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     frame.getTfY2().setText("");
                     frame.getTfY2().requestFocus();
                 }
