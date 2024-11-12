@@ -5,6 +5,8 @@ package com.mycompany.kolonna;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 /**
  *
@@ -24,6 +26,9 @@ public class Kolonna {
         KolonnaFrame frame = new KolonnaFrame();
         frame.setVisible(true);
 
+        Thread thread = new Thread(new ListeneerHandler(frame));
+        thread.start();
+
         frame.getBtnRaschet().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -35,6 +40,7 @@ public class Kolonna {
                 ypregdenie = Double.parseDouble(frame.getTfYpregdenie().getText());
 
                 run(frame);
+
             }
         });
     }
@@ -71,4 +77,123 @@ public class Kolonna {
         }
         return new double[]{Dc, Ygolc};
     }
+}
+
+class ListeneerHandler implements Runnable {
+
+    public final KolonnaFrame frame;
+
+    public ListeneerHandler(KolonnaFrame frame) {
+        this.frame = frame;
+    }
+
+    @Override
+    public void run() {
+        System.out.println("Start Thread");
+
+        frame.getTfX1().addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    frame.getTfY1().setText("");
+                    frame.getTfY1().requestFocus();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
+        frame.getTfY1().addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    frame.getTfX2().setText("");
+                    frame.getTfX2().requestFocus();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
+        frame.getTfX2().addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    frame.getTfY1().setText("");
+                    frame.getTfY1().requestFocus();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
+        frame.getTfX2().addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    frame.getTfY2().setText("");
+                    frame.getTfY2().requestFocus();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
+        frame.getTfY2().addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    frame.getTfInterval().setText("");
+                    frame.getTfInterval().requestFocus();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
+        frame.getTfInterval().addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    frame.getTfYpregdenie().setText("");
+                    frame.getTfYpregdenie().requestFocus();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
+
+    }
+
 }
