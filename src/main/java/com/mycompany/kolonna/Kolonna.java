@@ -10,7 +10,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.logging.Logger;
 
 /**
  *
@@ -26,6 +25,7 @@ public class Kolonna {
     static double ypregdenie;
     static double xTVZaranee;
     static double yTVZaranee;
+    static Timer timer;
 
     public static void main(String[] args) {
 
@@ -35,32 +35,30 @@ public class Kolonna {
         Thread thread = new Thread(new ListeneerHandler(frame));
         thread.start();
 
-        frame.getBtnRaschet().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+        frame.getBtnRaschet().addActionListener((ActionEvent e) -> {
+            x1 = Double.parseDouble(frame.getTfX1().getText());
+            y1 = Double.parseDouble(frame.getTfY1().getText());
+            x2 = Double.parseDouble(frame.getTfX2().getText());
+            y2 = Double.parseDouble(frame.getTfY2().getText());
+            interval = Double.parseDouble(frame.getTfInterval().getText());
+            ypregdenie = Double.parseDouble(frame.getTfYpregdenie().getText());
 
-                x1 = Double.parseDouble(frame.getTfX1().getText());
-                y1 = Double.parseDouble(frame.getTfY1().getText());
-                x2 = Double.parseDouble(frame.getTfX2().getText());
-                y2 = Double.parseDouble(frame.getTfY2().getText());
-                interval = Double.parseDouble(frame.getTfInterval().getText());
-                ypregdenie = Double.parseDouble(frame.getTfYpregdenie().getText());
+            try {
+                xTVZaranee = Double.parseDouble(frame.getTfTVZaraneeeX().getText());
+                yTVZaranee = Double.parseDouble(frame.getTfTVZaraneeY().getText());
+            } catch (NumberFormatException eexeption) {
+                System.out.println("Class Kolonna, listener btnRaschet:" + eexeption.getMessage());
+            }
+            run(frame);
 
-                try {
-                    xTVZaranee = Double.parseDouble(frame.getTfTVZaraneeeX().getText());
-                    yTVZaranee = Double.parseDouble(frame.getTfTVZaraneeY().getText());
-                } catch (NumberFormatException eexeption) {
-                    System.out.println("Class Kolonna, listener btnRaschet:" + eexeption.getMessage());
+            if (xTVZaranee != 0.0) {
+                if (timer != null) {
+                    timer.cancel();
                 }
-                run(frame);
-
-                if (xTVZaranee != 0.0) {
-                    frame.getLabKomanda().setText("Внимание!!!");
-                    frame.getLabKomanda().setForeground(Color.black);
-                    int ostatok = (int) ostatokDoTV(x1, y1, x2, y2, xTVZaranee, yTVZaranee);                  
-                    countdownTimerExample(ostatok, frame);
-                }
-
+                frame.getLabKomanda().setText("Внимание!!!");
+                frame.getLabKomanda().setForeground(Color.black);
+                int ostatok = (int) ostatokDoTV(x1, y1, x2, y2, xTVZaranee, yTVZaranee);
+                countdownTimerExample(ostatok, frame);
             }
         });
     }
@@ -69,13 +67,12 @@ public class Kolonna {
         int poletnoe = Integer.parseInt(frame.getTfPoletnoe().getText());
         int vrZadergki = Integer.parseInt(frame.getTfZadergkaPodKom().getText());
         int vremiaKomandu = poletnoe + vrZadergki;
-        Timer timer = new Timer();
+        timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
             int countdown = seconds;
 
             @Override
             public void run() {
-                System.out.println(countdown);
                 if (countdown <= 0) {
                     frame.getLabKomanda().setText("Ну что попал?");
                     frame.getLabKomanda().setForeground(Color.BLACK);
@@ -90,7 +87,6 @@ public class Kolonna {
                 }
             }
         }, 0, 1000); // Задаем выполнение задачи каждые 1000 миллисекунд (1 секунда)
-
     }
 
     /*
@@ -241,7 +237,56 @@ class ListeneerHandler implements Runnable {
             public void keyReleased(KeyEvent e) {
             }
         });
+        frame.getTfTVZaraneeeX().addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
 
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    frame.getTfTVZaraneeY().setText("");
+                    frame.getTfTVZaraneeY().requestFocus();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
+        frame.getTfTVZaraneeY().addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    frame.getTfPoletnoe().setText("");
+                    frame.getTfPoletnoe().requestFocus();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
+        frame.getTfPoletnoe().addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    frame.getTfZadergkaPodKom().setText("");
+                    frame.getTfZadergkaPodKom().requestFocus();
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
     }
-
 }

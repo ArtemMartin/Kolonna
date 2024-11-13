@@ -4,6 +4,7 @@
  */
 package com.mycompany.kolonna;
 
+import java.awt.Color;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -20,6 +21,7 @@ public class KolonnaFrame extends javax.swing.JFrame {
     public KolonnaFrame() {
         initComponents();
         setLocationRelativeTo(null);
+        getContentPane().setBackground(new Color(34, 82, 40));
     }
 
     /**
@@ -62,6 +64,8 @@ public class KolonnaFrame extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Колонна");
+        setBackground(new java.awt.Color(34, 82, 40));
+        setForeground(new java.awt.Color(102, 102, 102));
 
         jLabel1.setFont(new java.awt.Font("sansserif", 1, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 0, 0));
@@ -317,7 +321,7 @@ public class KolonnaFrame extends javax.swing.JFrame {
                     .addComponent(jLabel12)
                     .addComponent(tfOstalosSekynd, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(labKomanda))
-                .addGap(99, 99, 99))
+                .addGap(34, 34, 34))
         );
 
         pack();
