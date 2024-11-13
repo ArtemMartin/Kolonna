@@ -3,10 +3,14 @@
  */
 package com.mycompany.kolonna;
 
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.logging.Logger;
 
 /**
  *
@@ -20,6 +24,8 @@ public class Kolonna {
     static double y2;
     static double interval;
     static double ypregdenie;
+    static double xTVZaranee;
+    static double yTVZaranee;
 
     public static void main(String[] args) {
 
@@ -32,6 +38,7 @@ public class Kolonna {
         frame.getBtnRaschet().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 x1 = Double.parseDouble(frame.getTfX1().getText());
                 y1 = Double.parseDouble(frame.getTfY1().getText());
                 x2 = Double.parseDouble(frame.getTfX2().getText());
@@ -39,10 +46,69 @@ public class Kolonna {
                 interval = Double.parseDouble(frame.getTfInterval().getText());
                 ypregdenie = Double.parseDouble(frame.getTfYpregdenie().getText());
 
+                try {
+                    xTVZaranee = Double.parseDouble(frame.getTfTVZaraneeeX().getText());
+                    yTVZaranee = Double.parseDouble(frame.getTfTVZaraneeY().getText());
+                } catch (NumberFormatException eexeption) {
+                    System.out.println("Class Kolonna, listener btnRaschet:" + eexeption.getMessage());
+                }
                 run(frame);
+
+                if (xTVZaranee != 0.0) {
+                    frame.getLabKomanda().setText("Внимание!!!");
+                    frame.getLabKomanda().setForeground(Color.black);
+                    int ostatok = (int) ostatokDoTV(x1, y1, x2, y2, xTVZaranee, yTVZaranee);                  
+                    countdownTimerExample(ostatok, frame);
+                }
 
             }
         });
+    }
+
+    public static void countdownTimerExample(int seconds, KolonnaFrame frame) {
+        int poletnoe = Integer.parseInt(frame.getTfPoletnoe().getText());
+        int vrZadergki = Integer.parseInt(frame.getTfZadergkaPodKom().getText());
+        int vremiaKomandu = poletnoe + vrZadergki;
+        Timer timer = new Timer();
+        timer.scheduleAtFixedRate(new TimerTask() {
+            int countdown = seconds;
+
+            @Override
+            public void run() {
+                System.out.println(countdown);
+                if (countdown <= 0) {
+                    frame.getLabKomanda().setText("Ну что попал?");
+                    frame.getLabKomanda().setForeground(Color.BLACK);
+                    timer.cancel(); // Останавливаем таймер
+                    return;
+                }
+                countdown--;
+                frame.getTfOstalosSekynd().setText(String.valueOf(countdown));
+                if (vremiaKomandu > countdown) {
+                    frame.getLabKomanda().setText("ОГОНЬ Нах!!!");
+                    frame.getLabKomanda().setForeground(Color.RED);
+                }
+            }
+        }, 0, 1000); // Задаем выполнение задачи каждые 1000 миллисекунд (1 секунда)
+
+    }
+
+    /*
+    пример
+    5320160 7358281
+    5319714 7361112
+    1 АТ
+    1м23с
+    5319447 7363721
+     */
+    public static double ostatokDoTV(double x1, double y1, double x2, double y2, double xTV, double yTV) {
+        double[] da = OGZ(x1, y1, x2, y2);
+        double dalnost = da[0];
+        double ms = dalnost / interval;
+        double[] daTV = OGZ(x2, y2, xTV, yTV);
+        double dalnostTV = daTV[0];
+
+        return Math.round(dalnostTV / ms);
     }
 
     public static void run(KolonnaFrame frame) {
@@ -89,7 +155,6 @@ class ListeneerHandler implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("Start Thread");
 
         frame.getTfX1().addKeyListener(new KeyListener() {
             @Override
